@@ -8,13 +8,11 @@ pub fn read_image(filename: &str) -> DynamicImage {
 pub fn paint_image_as_ascii(img: DynamicImage) -> () {
   let pixels = img.pixels();
 
-
   struct AsciiPixel {
       x: u32,
       y: u32,
       character: u8,
   }
-
 
   let mut ascii_pixels: Vec<AsciiPixel> = vec![];
 
@@ -44,7 +42,6 @@ pub fn paint_image_as_ascii(img: DynamicImage) -> () {
           row = vec![]; // Vec consumed, so we need to make a new one
       }
       row.push(ascii_pixel.character);
-      // print!("{}", ascii_pixel.character);
   }
 }
 
@@ -61,4 +58,16 @@ pub fn pixel_as_char(pixel: Rgba<u8>) -> u8 {
   let avg: u8 = (sum / 3) as u8;
   let index = (avg as f32 / 3.7 as f32) as usize;
   ascii_chars.chars().nth(ascii_chars.len() - index - 1).unwrap() as u8
+
+}
+
+pub fn print_usage(program_name: &String) -> () {
+    print!(
+    "Usage: {} [OPTIONS]... [FILE]...\n
+    Prints an ascii image representation of the image corresponding to filename FILE to standard output.\n
+    Mandatory arguments to long options are mandatory for short options too.\n
+    \t-H, --help\t\tdisplay this message\n
+    \t-S, --sampling\t\tchoose sampling type. OPTIONS: <NONE>, <SKIP>, <BLEND>\n
+    \t-A, --aspect-ratio\tDefine the aspect ratio of the text to assist in BLEND sampling. Use format <WIDTH>:<HEIGHT>
+    \t-P, --palette\t\tProvide a custom palette to use for pixel mappings. Characters in palette should be ordered from highest to lowest intensity\n", program_name);  
 }

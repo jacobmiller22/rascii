@@ -1,6 +1,6 @@
 use std;
 mod lib;
-use crate::lib::{read_image, paint_image_as_ascii};
+use crate::lib::{read_image, paint_image_as_ascii, print_usage};
 
 fn parse_args() ->Vec<String> {
     let args: Vec<String> = std::env::args().collect();
@@ -9,6 +9,12 @@ fn parse_args() ->Vec<String> {
         println!("Usage: {} <file>", args[0]);
         std::process::exit(1);
     }
+
+    if args[1].to_lowercase() == "-h" || args[1].to_lowercase() == "--help" {
+        print_usage(&args[0]);
+        std::process::exit(0);
+    }
+
     args
 }
 
