@@ -1,8 +1,14 @@
 use image::{io::Reader as ImageReader, GenericImageView, Rgba, Pixel, DynamicImage};
 
-pub fn read_image(filename: &str) -> DynamicImage {
-    let img = ImageReader::open(filename).unwrap().decode().unwrap();
-    img
+#[derive(Default)]
+pub struct AspectRatio {
+  pub width: Option<u32>,
+  pub height: Option<u32>,
+}
+
+pub fn read_image(filename: &String) -> DynamicImage {
+  let img = ImageReader::open(filename).unwrap().decode().unwrap();
+  img
 }
 
 pub fn paint_image_as_ascii(img: DynamicImage) -> () {
@@ -48,7 +54,7 @@ pub fn paint_image_as_ascii(img: DynamicImage) -> () {
 pub fn pixel_as_char(pixel: Rgba<u8>) -> u8 {
 
   let ascii_chars: &str = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`\'. ";
-  let (r, g, b, a) = pixel.channels4();
+  let (r, g, b, _) = pixel.channels4();
   let mut sum: u32 = 0;
   sum += r as u32;
   sum += g as u32;
@@ -68,6 +74,6 @@ pub fn print_usage(program_name: &String) -> () {
     Mandatory arguments to long options are mandatory for short options too.\n
     \t-H, --help\t\tdisplay this message\n
     \t-S, --sampling\t\tchoose sampling type. OPTIONS: <NONE>, <SKIP>, <BLEND>\n
-    \t-A, --aspect-ratio\tDefine the aspect ratio of the text to assist in BLEND sampling. Use format <WIDTH>:<HEIGHT>
+    \t-A, --aspect-ratio\tDefine the aspect ratio of the text to assist in BLEND sampling. Use format <WIDTH>:<HEIGHT>\n
     \t-P, --palette\t\tProvide a custom palette to use for pixel mappings. Characters in palette should be ordered from highest to lowest intensity\n", program_name);  
 }
